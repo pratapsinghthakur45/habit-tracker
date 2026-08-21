@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './db.js';
 
+
 dotenv.config();
 const app = express();
 
@@ -11,9 +12,13 @@ app.use(cors());
 //this work as similar as body-parser
 app.use(express.json());
 
+import userRoutes from './routes/userRoutes.js'
+
 app.get('/',(req,res)=>{
     res.send("E-Commerce Platform");
 });
+
+app.use('/user',userRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
