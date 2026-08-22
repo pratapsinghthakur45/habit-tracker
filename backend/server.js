@@ -16,6 +16,8 @@ import userRoutes from './routes/userRoutes.js';
 
 import habitRoutes from './routes/habitRoutes.js';
 
+import checkInRoutes from './routes/checkInRoutes.js';
+
 app.get('/',(req,res)=>{
     res.send("E-Commerce Platform");
 });
@@ -23,6 +25,8 @@ app.get('/',(req,res)=>{
 app.use('/user',userRoutes);
 
 app.use('/user',habitRoutes);
+
+app.use("/user",checkInRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
