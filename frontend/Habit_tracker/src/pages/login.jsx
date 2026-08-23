@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import "./Register.css";
+import "./login.css";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    timezone: "Asia/Kolkata",
   });
 
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,13 +23,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setMessage("");
     setError("");
+    setMessage("");
 
     try {
-      const response = await api.post("/user/register", formData);
+      const response = await api.post("/user/login", formData);
 
-      console.log("Registration successful:", response.data);
+      console.log("Login response:", response.data);
 
       // Get JWT token from backend response
       const token = response.data.token;
@@ -39,18 +37,17 @@ const Register = () => {
       // Store token in localStorage
       localStorage.setItem("token", token);
 
-      setMessage("Registration successful!");
+      setMessage("Login successful!");
 
       console.log("Token stored:", token);
-
-      navigate("/");
+      navigate('/');
 
     } catch (error) {
-      console.log("Registration error:", error);
+      console.log("Login error:", error);
 
       if (error.response) {
         setError(
-          error.response.data.message || "Registration failed"
+          error.response.data.message || "Login failed"
         );
       } else {
         setError("Unable to connect to server");
@@ -62,7 +59,7 @@ const Register = () => {
     <div className="register-container">
       <div className="register-card">
 
-        <h2>Create Account</h2>
+        <h2>Login</h2>
 
         {message && (
           <p className="success-message">
@@ -77,19 +74,6 @@ const Register = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-
-          <div className="input-group">
-            <label>Name</label>
-
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
 
           <div className="input-group">
             <label>Email</label>
@@ -117,33 +101,11 @@ const Register = () => {
             />
           </div>
 
-          <div className="input-group">
-            <label>Timezone</label>
-
-            <select
-              name="timezone"
-              value={formData.timezone}
-              onChange={handleChange}
-            >
-              <option value="Asia/Kolkata">
-                Asia/Kolkata
-              </option>
-
-              <option value="America/New_York">
-                America/New_York
-              </option>
-
-              <option value="Europe/London">
-                Europe/London
-              </option>
-            </select>
-          </div>
-
           <button
             type="submit"
             className="submit-btn"
           >
-            Register
+            Login
           </button>
 
         </form>
@@ -152,4 +114,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
