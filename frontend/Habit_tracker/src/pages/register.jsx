@@ -43,7 +43,7 @@ const Register = () => {
 
       console.log("Token stored:", token);
 
-      navigate("/");
+      navigate("/dashboard");
 
     } catch (error) {
       console.log("Registration error:", error);

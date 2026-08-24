@@ -69,43 +69,83 @@ export const getHabit = async (req,res) =>{
         return res.status(500).json({message:"Internal Server Error:"});
     }
 }
-
-export const deleteHabit = async (req,res) => {
+export const deleteHabit = async (req, res) => {
     try {
         const user = req.user;
-        
-        if(!user){
-            return res.status(403).json({message:"Unauthorized:"});
-        }
-         const habitId = req.params.id;
-        const habit = await HabitSchema.findByIdAndDelete(habitId);
 
-        return res.status(200).json({message:"Delete habit successfully:"});
-        
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({message:"Internal Server Error:"});
-    }
-}
-
-export const updateHabit = async (req,res) => {
-    try {
-        const user = req.user;
-        
-        if(!user){
-            return res.status(403).json({message:"Unauthorized:"});
+        if (!user) {
+            return res.status(403).json({
+                message: "Unauthorized"
+            });
         }
-        const updatedData = req.body;
-         const habitId = req.params.id;
-        const habit = await HabitSchema.findByIdAndUpdate(habitId,updatedData,{
-            new:true,
-            runValidators:true
+
+        const habitId = req.params.id;
+
+        const habit = await HabitSchema.findOneAndDelete({
+            _id: habitId,
+            user: user.id
         });
 
-        return res.status(200).json({message:"updated habit successfully:",habit});
-        
+        if (!habit) {
+            return res.status(404).json({
+                message: "Habit not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Habit deleted successfully"
+        });
+
     } catch (error) {
         console.log(error);
-        return res.status(500).json({message:"Internal Server Error:"});
+
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
     }
-}
+};
+
+export const updateHabit = async (req, res) => {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            return res.status(403).json({
+                message: "Unauthorized"
+            });
+        }
+
+        const habitId = req.params.id;
+        const updatedData = req.body;
+
+        const habit = await HabitSchema.findOneAndUpdate(
+            {
+                _id: habitId,
+                user: user.id
+            },
+            updatedData,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if (!habit) {
+            return res.status(404).json({
+                message: "Habit not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Habit updated successfully",
+            habit
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+};

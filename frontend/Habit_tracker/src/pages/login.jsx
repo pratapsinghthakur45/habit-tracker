@@ -40,7 +40,7 @@ const Login = () => {
       setMessage("Login successful!");
 
       console.log("Token stored:", token);
-      navigate('/');
+      navigate('/dashboard');
 
     } catch (error) {
       console.log("Login error:", error);
