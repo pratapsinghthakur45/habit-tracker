@@ -7,53 +7,60 @@ import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import ProtectedRoute from "./components/protectedRoute";
 import PublicRoute from "./components/publicRoute";
+import HabitDetails from "./pages/HabitDetails";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 
 function App() {
-    return (
-        <>
-            <BrowserRouter>
+  return (
+    <>
+      <BrowserRouter>
 
-                <Navbar />
+        <Navbar />
 
-                <Routes>
+        <Routes>
 
-                    <Route
-                        path="/register"
-                        element={
-                            <PublicRoute>
-                                <Register />
-                            </PublicRoute>
-                        }
-                    />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
 
-                    <Route
-                        path="/"
-                        element={<h1>Home</h1>}
-                    />
 
-                    <Route
-                        path="/login"
-                        element={
-                            <PublicRoute>
-                                <Login />
-                            </PublicRoute>
-                        }
-                    />
 
-                    <Route
-                        path="/dashboard"
-                        element={
-                            <ProtectedRoute>
-                                <Dashboard />
-                            </ProtectedRoute>
-                        }
-                    />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
 
-                </Routes>
+          <Route path="/" element={ <PublicRoute> <Home /> </PublicRoute>} />
 
-            </BrowserRouter>
-        </>
-    );
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/habits/:habitId"
+            element={<HabitDetails />}
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;

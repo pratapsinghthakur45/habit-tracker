@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./login.css";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -95,7 +96,7 @@ const Login = () => {
               type="password"
               name="password"
               placeholder="Enter your password"
-              value={formData.password}
+              value={formData.formData ? formData.email : formData.password}
               onChange={handleChange}
               required
             />
@@ -107,7 +108,10 @@ const Login = () => {
           >
             Login
           </button>
-
+          
+          <p className="auth-footer-text">
+            Don't have an account? <Link to="/register" className="auth-link">Register</Link>
+          </p>
         </form>
       </div>
     </div>

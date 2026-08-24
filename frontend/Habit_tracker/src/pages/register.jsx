@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Register.css";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -145,8 +146,11 @@ const Register = () => {
           >
             Register
           </button>
+            <p className="auth-footer-text">Aleready have an account?<Link to="/login" className="auth-link">Login</Link></p>
+
 
         </form>
+       
       </div>
     </div>
   );
