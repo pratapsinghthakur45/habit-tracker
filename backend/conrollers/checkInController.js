@@ -152,20 +152,55 @@ export const deleteCheckIn = async (req, res) => {
         const user = req.user;
 
         if (!user) {
-            return res.status(403).json({ message: "Unauthorized:" });
+            return res.status(403).json({
+                message: "Unauthorized"
+            });
         }
 
-        const { habitId, checkInId } = req.params.id;
+        const { habitId, checkInId } = req.params;
 
-        const checkIns = await CheckIn.findByIdAndDelete({ habit: habitId, checkIn: checkInId });
+        console.log("Habit ID:", habitId);
+        console.log("Check-in ID:", checkInId);
+        console.log("User ID:", user.id);
 
-        // if(!checkIns){
-        //     return res.status(404).json({message:"Not check in yet:"});
-        // }
+        // First find the check-in by its ID
+        const checkIn = await CheckIn.findById(checkInId);
 
-        return res.status(200).json({ message: "All check in fetched:", checkIns });
+        console.log("Check-in found:", checkIn);
+
+        if (!checkIn) {
+            return res.status(404).json({
+                message: "Check-in not found"
+            });
+        }
+
+        // Make sure this check-in belongs to this habit
+        if (checkIn.habit.toString() !== habitId) {
+            return res.status(403).json({
+                message: "Check-in does not belong to this habit"
+            });
+        }
+
+        // Make sure this check-in belongs to this user
+        if (checkIn.user.toString() !== user.id.toString()) {
+            return res.status(403).json({
+                message: "You cannot delete this check-in"
+            });
+        }
+
+        // Delete check-in
+        await CheckIn.findByIdAndDelete(checkInId);
+
+        return res.status(200).json({
+            message: "Check-in deleted successfully",
+            checkIn
+        });
+
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error:" });
+
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
     }
-}
+};

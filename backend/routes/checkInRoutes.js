@@ -9,6 +9,6 @@ const router = express.Router();
 router.post('/habits/:id/checkIn',jwtAuth,checkIn);
 
 router.get('/habits/:id/checkIn',jwtAuth,getCheckIn);
-router.delete('/habits/:id/checkIn/:id',jwtAuth,deleteCheckIn);
+router.delete('/habits/:habitId/checkIn/:checkInId',jwtAuth,deleteCheckIn);
 
 export default router;
